@@ -7,9 +7,21 @@ class BooksController < ApplicationController
       format.html
       format.text
       format.csv do
-        csv_format = Book.generate_csv(@books)
-        render plain: csv_format
+        render plain: Book.generate_csv(@books)
       end
+      format.json do
+        render json: @books.map { |book|
+          #filtering what we return back to the user
+          {
+            title: book.title,
+            author: book.author,
+            already_read: book.already_read
+          }
+
+        }
+      end
+
+
     end
 
   end
